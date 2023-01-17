@@ -18,55 +18,75 @@
 
 # Process of Text Removal
 ## Original Image
-- <img src="https://i.imgur.com/PBIWNHF.png" alt="2436_original" width="600">
+- Original image
+    - <img src="https://i.imgur.com/PBIWNHF.png" alt="2436_original" width="600">
 ## Bounding Box Annotation
-- <img src="https://i.imgur.com/3xCYIxL.png" alt="2436_bboxes" width="600">
+- Human-annotated bounding boxes
+    - <img src="https://i.imgur.com/3xCYIxL.png" alt="2436_bboxes" width="600">
 ## Text Detection
-- <img src="https://i.imgur.com/wzR5SQL.png" alt="2436_text_score_map" width="600">
+- Text score map
+    - <img src="https://i.imgur.com/wzR5SQL.png" alt="2436_text_score_map" width="600">
 - 'CRAFT' ([Character Region Awareness for Text Detection](https://arxiv.org/abs/1904.01941))를 사용하여 Text score map을 생성합니다. 빨간색은 1에 가까운 값을, 파란색은 0에 가까운 값을 나타냅니다. (이해를 돕기 위해 그 위에 원본 이미지를 함께 배치했습니다.)
 ## Text Mask
-- <img src="https://i.imgur.com/6HdG56P.png" alt="2436_text_mask" width="600">
+- Text mask
+    - <img src="https://i.imgur.com/6HdG56P.png" alt="2436_text_mask" width="600">
 - Text score map에 대해 Image thresholding을 수행하여 Text mask를 생성합니다. Text mask를 벗어난 텍스트도 존재하며, 반대로 텍스트가 아닌 영역이 Text mask에 포함되는 경우도 존재합니다.
 - 따라서 최대한 정확하게 텍스트만을 포함하는 Text stroke mask가 필요합니다.
-## Pseudo Character Centers (PCCs) 
-- <img src="https://i.imgur.com/oDCohO7.png" alt="2436_pccs" width="600">
+## Pseudo Character Centers (PCCs)
+- Pseudo character centers (PCCs)
+    - <img src="https://i.imgur.com/oDCohO7.png" alt="2436_pccs" width="600">
 - CRAFT를 통해 생성된 Text score map을 사용해 각 문자의 중심 좌표를 추출합니다.
 ## Text Segmentation Map
-- <img src="https://i.imgur.com/s5saciM.png" alt="2436_text_segmentation_map" width="600">
+- Text segmentation map
+    - <img src="https://i.imgur.com/s5saciM.png" alt="2436_text_segmentation_map" width="600">
 - Local maxima에 대해 Watershed를 적용하여 각 문자를 서로 다른 Class로 구분하는 Text segmentation map을 생성합니다. (위 이미지는 이해를 돕기 위해 5개의 Class만으로 단순화했습니다.)
 ## Image Adaptive Thresholding
-- <img src="https://i.imgur.com/DKOnTWq.png" alt="2436_adaptive_thresholded" width="600">
+- Adaptive thresholded image
+    - <img src="https://i.imgur.com/DKOnTWq.png" alt="2436_adaptive_thresholded" width="600">
 - 이미지에 대해 Adaptive thresholding을 수행합니다.
 ## Image Segmentation Map
-- <img src="https://i.imgur.com/KTR6pq1.png" alt="2436_image_segmentation_map" width="600">
+- Image segmentation map
+    - <img src="https://i.imgur.com/KTR6pq1.png" alt="2436_image_segmentation_map" width="600">
 - Adaptive thresholding 수행 후 Connected component labeling을 통해 Image segmentation map을 생성합니다. (위 이미지는 이해를 돕기 위해 5개의 Class만으로 단순화했습니다.)
 ## Text Stroke Mask
-- <img src="https://i.imgur.com/6y0iUzP.png" alt="2436_text_stroke_mask1" width="600">
+- Text stroke mask for texts to be removed
+    - <img src="https://i.imgur.com/taJ2wVf.png" alt="2436_text_stroke_mask1" width="600">
+- Text stroke mask for texts not to be removed
+    - <img src="https://i.imgur.com/AWWhWL1.png" alt="2436_text_stroke_mask2" width="600">
 - Image segmentation map의 각 Label이 Text segmantation map의 0이 아닌 Label과 얼마나 Overlap이 발생하는지 Pixel counts를 통해 계산합니다. 특정한 값 이상의 Overlap이 발생하는 Image segmentation map의 Labels에 대해 Text stroke mask를 생성합니다.
-- 이떄 Text stroke mask는 제거해야 하는 텍스트와 제거하지 말아야 하는 텍스트 각각에 대해 따로 생성합니다.
-## Text Stroke Mask Thickening
-- <img src="https://i.imgur.com/x1kSWFi.png" alt="2436_thickening" width="600">
+- 이때 Text stroke mask는 제거해야 하는 텍스트와 제거하지 말아야 하는 텍스트 각각에 대해 따로 생성합니다.
+## Text Stroke Mask Postprocessing
+- Postprocessed text stroke mask
+    - <img src="https://i.imgur.com/x1kSWFi.png" alt="2436_thickening" width="600">
 - Text stroke mask가 텍스트를 완전히 덮지 못하면 텍스트는 깔끔하게 제거되지 않습니다. 이를 방지하기 위해 Thickening을 적절히 수행합니다.
 ## Image Inpainting
-- <img src="https://i.imgur.com/V9FbGtR.png" alt="2436_image_inpainting" width="600">
+- Inpainted image
+    - <img src="https://i.imgur.com/V9FbGtR.png" alt="2436_image_inpainting" width="600">
 - 'LaMa' ([Resolution-robust Large Mask Inpainting with Fourier Convolutions](https://arxiv.org/abs/2109.07161))와 Text stroke mask를 사용해 Image inpainting을 수행합니다.
 - 이때 제거해야 하는 텍스트와 제거하지 말아야 하는 텍스트 모두에 대해 Text removal을 수행한 후 제거하지 말아야 하는 텍스트는 다시 입힙니다.
 
 # Research
 # Comparison with Competitors
-- <img src="https://i.imgur.com/XyeWfQq.jpg" alt="2436_others" width="600">
-- <img src="https://i.imgur.com/r3TCETc.jpg" alt="1360_others" width="600">
-- <img src="https://i.imgur.com/TN7uwaJ.jpg" alt="1360_ours" width="600">
-## Using Bounding Boxes as a Mask in Image Inpainting
-- 제거하지 말아야 할 텍스트를 일부 제거하거나 자연스럽게 Texture를 살리지 못합니다.
-    - <img src="https://i.imgur.com/GfnExpj_d.webp?maxwidth=760&fidelity=grand" alt="646_1" width="300">
-    - <img src="https://i.imgur.com/2nMPnO1_d.webp?maxwidth=760&fidelity=grand" alt="646_2" width="300">
-    - <img src="https://i.imgur.com/4DeWz3L_d.webp?maxwidth=760&fidelity=grand" alt="679_1" width="300">
-    - <img src="https://i.imgur.com/2XjZyqR_d.webp?maxwidth=760&fidelity=grand" alt="679_2" width="300">
+- Competitor's
+    - <img src="https://i.imgur.com/Pb8mTfY.png" alt="1360_others" width="600">
+- Ours
+    - <img src="https://i.imgur.com/TN7uwaJ.jpg" alt="1360_ours" width="600">
+## Using Bounding Boxes As a Mask in Image Inpainting
+- 제거하지 말아야 할 텍스트를 일부 제거하거나 배경이 되는 도형을 뭉개버리는 경우
+    - Failure case
+        - <img src="https://i.imgur.com/GfnExpj_d.webp?maxwidth=760&fidelity=grand" alt="646_1" width="300">
+    - Success case
+        - <img src="https://i.imgur.com/2nMPnO1_d.webp?maxwidth=760&fidelity=grand" alt="646_2" width="300">
+- 배경의 Texture를 자연스럽게 살리지 못하는 경우
+    - Failure case
+        - <img src="https://i.imgur.com/4DeWz3L_d.webp?maxwidth=760&fidelity=grand" alt="679_1" width="300">
+    - Success case
+        - <img src="https://i.imgur.com/2XjZyqR_d.webp?maxwidth=760&fidelity=grand" alt="679_2" width="300">
 
 # Future Improvements
 ## Text Stroke Mask Generation using Fully Connected Conditional Random Fields (FC CRFs)
-- <img src="https://i.imgur.com/01plHM4.png" alt="ajime_fccrf" width="600">
+- Text stroke mask by fully connceted conditional random fields
+    - <img src="https://i.imgur.com/01plHM4.png" alt="ajime_fccrf" width="600">
 ## Text Stroke Mask Generation by Deep Learning-based Approach
 - Scene text removal을 주제로 한 최신 논문들에서 Deep learning을 사용한 Text stroke mask generation을 수행하는 것을 볼 수 있습니다.
     - [Don’t Forget Me: Accurate Background Recovery for Text Removal via Modeling Local-Global Context](https://www.ecva.net/papers/eccv_2022/papers_ECCV/papers/136880406.pdf)
