@@ -6,7 +6,7 @@
 1. Bounding box annotation
     - 수작업으로 적절한 의미 단위의 Bounding box annotation을 수행합니다. 적절한 의미 단위란 예를 들어 "닭만두곰탕 (공기밥 별도)"를 각각 "닭만두곰탕"과 "(공기밥 별도)"로 나누는 것을 말합니다.
     - 이때 가게 이름 또는 가격에 해당하는 텍스트와, 한국어 메뉴를 예로 들면 한국어 외의 텍스트는 대상으로 하지 않습니다.
-2. **Text removal**
+2. **Image text removal**
     - 포토샵을 사용해 원본 메뉴 이미지에서 글자를 지웁니다.
     - 이 과정을 자동화한 방법론에 대해서 설명할 예정입니다.
 3. Transcription
@@ -16,7 +16,7 @@
 5. Text rendering
     - 번역된 텍스트를 Bounding box의 좌표를 활용해 메뉴 이미지 위에 입힙니다.
 
-# Process of Text Removal
+# Process of Image Text Removal
 ## Original Image
 - Original image
     - <img src="https://i.imgur.com/PBIWNHF.png" alt="2436_original" width="600">
@@ -25,16 +25,16 @@
     - <img src="https://i.imgur.com/TVD2dIq.png" alt="2436_bboxes" width="600">
 - 빨간색, 파란색, 초록색 간의 차이는 없으며 눈에 가장 잘 띄는 색상으로 표현했습니다.
 ## 2. Text Detection
-- Text score map
-    - <img src="https://i.imgur.com/N2zFzGN.png" alt="2436_text_score_map" width="600">
-- 'CRAFT' ([Character Region Awareness for Text Detection](https://arxiv.org/abs/1904.01941))를 사용하여 Text score map을 생성합니다. 빨간색은 Score가 1에 가까운 값을, 파란색은 0에 가까운 값을 나타냅니다. 이해를 돕기 위해 그 위에 원본 이미지를 함께 배치했습니다.
+- Region score map
+    - <img src="https://i.imgur.com/N2zFzGN.png" alt="2436_region_score_map" width="600">
+- 'CRAFT' ([Character Region Awareness for Text Detection](https://arxiv.org/abs/1904.01941))를 사용하여 Region score map을 생성합니다. 빨간색은 Score가 1에 가까운 값을, 파란색은 0에 가까운 값을 나타냅니다. 이해를 돕기 위해 그 위에 원본 이미지를 함께 배치했습니다.
 ## 3. Text Stroke Extraction
 - Rule-based approach와 Learning-based approach로 나눌 수 있습니다.
 ### Rule-based Approach
-#### 1) Text Mask Generation
-- Text mask
-    - <img src="https://i.imgur.com/H9lao9t.png" alt="2436_text_mask" width="600">
-- Text score map을 사용해 Text mask를 생성합니다.
+#### 1) Region Mask Generation
+- Region mask
+    - <img src="https://i.imgur.com/H9lao9t.png" alt="2436_region_mask" width="600">
+- Region score map을 사용해 Region mask를 생성합니다.
 #### 2) Image Segmentation Map Generation
 - Image segmentation map
     - <img src="https://i.imgur.com/ujrxsrk.png" alt="2436_image_segmentation_map" width="600">
@@ -42,7 +42,7 @@
 #### 3) Text Stroke Mask Generation
 - Text stroke mask
     - <img src="https://i.imgur.com/EgarFnX.png" alt="2436_text_stroke_mask" width="600">
-- Image segmentation map의 각 Label이 Text mask와 얼마나 Overlap이 발생하는지 Pixel counts를 통해 계산합니다. 특정한 값 이상의 Overlap이 발생하는 Image segmentation map의 Labels를 가지고 Text stroke mask를 생성합니다.
+- Image segmentation map의 각 Label이 Region mask와 얼마나 Overlap이 발생하는지 Pixel counts를 통해 계산합니다. 특정한 값 이상의 Overlap이 발생하는 Image segmentation map의 Labels를 가지고 Text stroke mask를 생성합니다.
 #### 4) Text Stroke Mask Refinement Using Fully Connected Conditional Random Fields (FC CRFs)
 - FC CRFs을 통해 Text stroke mask를 보정합니다.
 ### Learning-based Approach
@@ -54,13 +54,13 @@
 - Text stroke mask
     - <img src="https://i.imgur.com/mRQSLzW.png" alt="2436_lbtsm" width="600">
 - 분할된 이미지들을 가지고 Text stroke mask를 생성하고 이들을 다시 합칩니다.
-#### 3) Text Mask Generation
-- Text mask
-    - <img src="https://i.imgur.com/HpEVvJu.png" alt="2436_text_mask_fccrf" width="600">
+#### 3) Region Mask Generation
+- Region mask
+    - <img src="https://i.imgur.com/HpEVvJu.png" alt="2436_region_mask_fccrf" width="600">
 #### 4) Running Fully Connected Conditional Random Fields (FC CRFs)
 - Result of FC CRFs
     - <img src="https://i.imgur.com/J58rZEe.png" alt="2436_fccrf_result" width="600">
-- 앞서 생성한 Text mask를 사용해 FC CRFs를 통해 Text stroke mask를 보정합니다.
+- 앞서 생성한 Region mask를 사용해 FC CRFs를 통해 Text stroke mask를 보정합니다.
 #### 5) Final Text Stroke Mask
 - Final text stroke mask (Text stroke mask + Result of FC CRFs)
     - <img src="https://i.imgur.com/2TgCExG.png" alt="2436_final_mask" width="600">
@@ -68,13 +68,13 @@
 ### (1) Text Stroke Mask Thickening
 - Text stroke mask가 텍스트를 완전히 덮지 못하면 텍스트는 깔끔하게 제거되지 않습니다. 적절히 Image thickening을 적용해 Text stroke mask가 텍스트를 충분히 덮을 수 있도록 처리합니다.
 ### (2) Applying Watershed
-- Text segmentation map
-    - <img src="https://i.imgur.com/3m2TOkK.png" alt="2436_text_segmentation_map" width="600">
-- Text stroke mask에 Watershed를 적용해 각 문자를 서로 다른 Class로 구분하는 Text segmentation map을 생성합니다. (위 이미지는 이해를 돕기 위해 26개의 Class만으로 단순화했습니다.)
+- Region segmentation map
+    - <img src="https://i.imgur.com/3m2TOkK.png" alt="2436_region_segmentation_map" width="600">
+- Text stroke mask에 Watershed를 적용해 각 문자를 서로 다른 Class로 구분하는 Region segmentation map을 생성합니다. (위 이미지는 이해를 돕기 위해 26개의 Class만으로 단순화했습니다.)
 ### (3) Pseudo Character Centers (PCCs) Extraction
 - PCCs
     - <img src="https://i.imgur.com/8ZC9zD4.png" alt="2436_pccs" width="600">
-- Text score map을 사용해 각 문자의 중심 좌표를 추출합니다.
+- Region score map을 사용해 각 문자의 중심 좌표를 추출합니다.
 ### (4) Text Stroke Mask Spltting
 - Postprocessed text stroke mask for texts to be removed
     - <img src="https://i.imgur.com/3L5lQT1.png" alt="2436_mask1" width="600">
@@ -113,11 +113,11 @@
     - 해상도와 무관하게 평가가 이루어져야 합니다.
     - 하나의 이미지에서 많은 텍스트를 지울수록 높게 평가되어야 합니다.
 - Emplementation
-    - Text score map from original image | Text score map from text-removed image
+    - Region score map from original image | Region score map from text-removed image
         - <img src="https://i.imgur.com/MN9nz7i.jpg" width="800">
     - 텍스트를 완전하게 제거했음에도 불구하고 기존에 텍스트가 존재하지 않았던 영역에 대해서 쌩뚱맞게 Text detection을 해 버리고 말았습니다.
-    - Masked text score map from original image | Masked text score map from text-removed image
+    - Masked region score map from original image | Masked region score map from text-removed image
         - <img src="https://i.imgur.com/9FKM5Nq.jpg" width="800">
-    - 기존에 텍스트가 존재했던 영역에 대한 마스크를 생성하여 Image text removal 전후 각각의 Text score map을 마스킹합니다. 이로써 새롭게 불필요하게 탐지된 텍스트를 평가 대상에서 제외할 수 있습니다.
-    - Image text removal 전후 각각의 Text score map에 대해서 모든 픽셀에 대한 Text score의 합의 비율을 구하고 이를 1에서 빼 값으로 평가합니다. -1에서 1 사이의 값을 가지며 높을수록 텍스트를 완전하게 제거한 것입니다.
+    - 기존에 텍스트가 존재했던 영역에 대한 마스크를 생성하여 Image text removal 전후 각각의 Region score map을 마스킹합니다. 이로써 새롭게 불필요하게 탐지된 텍스트를 평가 대상에서 제외할 수 있습니다.
+    - Image text removal 전후 각각의 Region score map에 대해서 모든 픽셀에 대한 Region score의 합의 비율을 구하고 이를 1에서 빼 값으로 평가합니다. -1에서 1 사이의 값을 가지며 높을수록 텍스트를 완전하게 제거한 것입니다.
 ## How Much Image Is Realistic
