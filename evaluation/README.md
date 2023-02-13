@@ -1,5 +1,5 @@
 # SCUT-EnsText Dataset
-- Source: [SUT-EnsText](https://github.com/HCIILAB/SCUT-EnsText)
+- [SUT-EnsText](https://github.com/HCIILAB/SCUT-EnsText)
 - Only used test set
 - Some text images actually had no text in it; 'img_380.jpg'
 ## Evaluation Methods
@@ -19,3 +19,4 @@
     - <img src="https://i.imgur.com/Z5atu3X.jpg" width="300">
 
 # KAIST Scene Text Database
+- [KAIST Scene Text Database](http://www.iapr-tc11.org/mediawiki/index.php/KAIST_Scene_Text_Database)
