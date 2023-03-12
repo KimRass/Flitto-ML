@@ -11,3 +11,6 @@
 # Scene text removal via cascaded text stroke detection and erasing
 - Paper: https://arxiv.org/pdf/2011.09768.pdf
 - Github: https://github.com/wcq19941215/SceneTextRemoval
+
+# Scene Text Eraser
+- Paper: https://human.ait.kyushu-u.ac.jp/publications/ICDAR2017-Nakamura.pdf

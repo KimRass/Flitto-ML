@@ -1,5 +1,5 @@
 # SCUT-EnsText Dataset
-- [SUT-EnsText](https://github.com/HCIILAB/SCUT-EnsText)
+- [SCUT-EnsText](https://github.com/HCIILAB/SCUT-EnsText)
 - Only used test set
 - Some text images actually had no text in it; 'img_380.jpg'
 ## Evaluation Methods
