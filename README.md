@@ -1,22 +1,21 @@
 # What Is 'Menu Translation' ('메뉴 번역')
-- 음식점 운영자가 "메뉴 번역" 애플리케이션을 통해 메뉴판 사진을 찍어 올리면, 이를 다국어로 번역해 QR 코드를 제공하는 서비스입니다.
-- 지원 언어: 한국어, 영어, 일본어, 중국어 간체, 중국어 번체, 프랑스어, 스페인어, 아랍어 (총 8개)
+- 음식점의 메뉴 이미지를 다국어로 번역해 QR 코드로서 제공하는 서비스입니다.
 
 # Overall Process of Menu Translation
 1. Bounding box annotation
     - 수작업으로 적절한 의미 단위의 Bounding box annotation을 수행합니다. 적절한 의미 단위란 예를 들어 "닭만두곰탕 (공기밥 별도)"를 각각 "닭만두곰탕"과 "(공기밥 별도)"로 나누는 것을 말합니다.
     - 이때 가게 이름 또는 가격에 해당하는 텍스트와, 한국어 메뉴를 예로 들면 한국어 외의 텍스트는 대상으로 하지 않습니다.
-2. **Image text removal**
-    - 포토샵을 사용해 원본 메뉴 이미지에서 글자를 지웁니다.
-    - 이 과정을 자동화한 방법론에 대해서 설명할 예정입니다.
+2. ***Scene text removal***
+    - 원본 이미지에서 글자를 지웁니다.
+    - 이 레포지토리는 바로 이 단계에 대해서 설명합니다.
 3. Transcription
     - 원본 메뉴 이미지에서 각 Bounding box별로 텍스트를 옮겨 적습니다.
 4. Translation
     - Machine translation을 수행한 후 올바르게 번역이 됐는지 사람이 검수합니다.
 5. Text rendering
-    - 번역된 텍스트를 Bounding box의 좌표를 활용해 메뉴 이미지 위에 입힙니다.
+    - 텍스트가 지워진 메뉴 이미지 위에 번역된 텍스트를 렌더링합니다.
 
-# Process of Image Text Removal
+# Process of Scene Text Removal
 - [1]에서 제시한 방법론을 따라갑니다.
 ## Original Image
 - Original image
@@ -112,8 +111,8 @@
     - 텍스트를 완전하게 제거했음에도 불구하고 기존에 텍스트가 존재하지 않았던 영역에 대해서 쌩뚱맞게 Text detection을 해 버리고 말았습니다.
     - Masked region score map from original image | Masked region score map from text-removed image
         - <img src="https://i.imgur.com/9FKM5Nq.jpg" width="800">
-    - 기존에 텍스트가 존재했던 영역에 대한 마스크를 생성하여 Image text removal 전후 각각의 Region score map을 마스킹합니다. 이로써 새롭게 불필요하게 탐지된 텍스트를 평가 대상에서 제외할 수 있습니다.
-    - Image text removal 전후 각각의 Region score map에 대해서 모든 픽셀에 대한 Region score의 합의 비율을 구하고 이를 1에서 빼 값으로 평가합니다. -1에서 1 사이의 값을 가지며 높을수록 텍스트를 완전하게 제거한 것입니다.
+    - 기존에 텍스트가 존재했던 영역에 대한 마스크를 생성하여 Scene text removal 전후 각각의 Region score map을 마스킹합니다. 이로써 새롭게 불필요하게 탐지된 텍스트를 평가 대상에서 제외할 수 있습니다.
+    - Scene text removal 전후 각각의 Region score map에 대해서 모든 픽셀에 대한 Region score의 합의 비율을 구하고 이를 1에서 빼 값으로 평가합니다. -1에서 1 사이의 값을 가지며 높을수록 텍스트를 완전하게 제거한 것입니다.
 ## How Plausible Image Is
 
 # References:
