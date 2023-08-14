@@ -100,8 +100,8 @@
     - Success case
         - <img src="https://i.imgur.com/2XjZyqR_d.webp?maxwidth=760&fidelity=grand" alt="679_2" width="300">
 
-# Metric
-## How Much Text Erased
+# Evaluation
+<!-- ## Text Detectability
 - Requirements:
     - 해상도와 무관하게 평가가 이루어져야 합니다.
     - 하나의 이미지에서 많은 텍스트를 지울수록 높게 평가되어야 합니다.
@@ -112,8 +112,7 @@
     - Masked region score map from original image | Masked region score map from text-removed image
         - <img src="https://i.imgur.com/9FKM5Nq.jpg" width="800">
     - 기존에 텍스트가 존재했던 영역에 대한 마스크를 생성하여 Scene text removal 전후 각각의 Region score map을 마스킹합니다. 이로써 새롭게 불필요하게 탐지된 텍스트를 평가 대상에서 제외할 수 있습니다.
-    - Scene text removal 전후 각각의 Region score map에 대해서 모든 픽셀에 대한 Region score의 합의 비율을 구하고 이를 1에서 빼 값으로 평가합니다. -1에서 1 사이의 값을 가지며 높을수록 텍스트를 완전하게 제거한 것입니다.
-## How Plausible Image Is
+    - Scene text removal 전후 각각의 Region score map에 대해서 모든 픽셀에 대한 Region score의 합의 비율을 구하고 이를 1에서 빼 값으로 평가합니다. -1에서 1 사이의 값을 가지며 높을수록 텍스트를 완전하게 제거한 것입니다. -->
 
 # References:
 - [1] [Erasing Scene Text with Weak Supervision](https://openaccess.thecvf.com/content_WACV_2020/papers/Zdenek_Erasing_Scene_Text_with_Weak_Supervision_WACV_2020_paper.pdf)

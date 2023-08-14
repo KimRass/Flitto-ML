@@ -1,4 +1,4 @@
-image,p_rule,p_learning,r_rule,r_learning,f_rule,f_learning
+image,precision_rule,precision_learning,recall_rule,recall_learning,f1_score_rule,f1_score_learning
 1.jpg,0.5418,0.6068,0.3511,0.3424,0.4261,0.4378
 2.jpg,0.5609,0.5564,0.4222,0.4245,0.4818,0.4816
 3.jpg,0.5887,0.5878,0.503,0.4774,0.5425,0.5269

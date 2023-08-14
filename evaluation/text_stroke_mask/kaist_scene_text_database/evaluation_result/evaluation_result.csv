@@ -1,4 +1,4 @@
-filename,rule_based_text_stroke_mask,learning_based_text_stroke_mask
+filename,rule_based,learning_based
 0000,0.5852,0.7309
 0001,0.7315,0.6696
 0002,0.9405,0.7843
