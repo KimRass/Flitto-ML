@@ -1,7 +1,6 @@
 # What Is 'Menu Translation' ('메뉴 번역')
 - 음식점의 메뉴 이미지를 다국어로 번역해 QR 코드를 통해 제공하는 서비스입니다.
 ## Process
-<!-- 1. Bounding box annotation -->
 1. OCR
     - <img src="https://github.com/flitto/express-param/assets/105417680/7caaf45f-d45a-439d-8e2c-fafbe7ff8f99" width="600">
     - OCR 엔진을 통해 1차적으로 OCR을 수행한 후 약간의 수작업을 통해 둘 이상의 bounding box를 서로 합치거나 하나의 bounding box를 둘로 나누는 등의 보정 작업을 수행합니다. scene text recognition 결과에 대해서는 자체적으로 보유한 크라우드 소싱 데이터 레이블링 플랫폼을 통해 검수를 진행합니다.

@@ -10,54 +10,53 @@
 - Text region score map
     - <img src="https://i.imgur.com/N2zFzGN.png" width="600">
     - (이해를 돕기 위해 그 위에 원본 이미지를 함께 배치했습니다.)
-- 'CRAFT' scene text detection model [2]을 사용하여 'Text region score map'을 생성합니다. 어떤 픽셀이 빨간색에 가까울수록 모델이 그 픽셀을 텍스트의 중심이라고 확신함을 나타냅니다.
-## 2. Text Stroke Prediction
+- 'CRAFT' scene text detection model [2]을 사용하여 'text region score map'을 생성합니다. 어떤 픽셀이 빨간색에 가까울수록 모델이 그 픽셀을 텍스트의 중심이라고 확신함을 나타냅니다.
+## 2-1. Text Stroke Prediction
 - rule-based approach와 learning-based approach로 나눌 수 있습니다.
 ### Rule-based Approach
 1. Text region mask generation
     - <img src="https://i.imgur.com/H9lao9t.png" width="600">
-1. image segmentation
+2. Image segmentation
     - <img src="https://i.imgur.com/ujrxsrk.png" width="600">
     - (매우 많은 수의 label이 생성되지만 이해를 돕기 위해 26개의 색상을 사용하여 단순화했습니다.)
-- adaptive thresholding과 connected component labeling을 통해 image segmentation을 수행합니다.
-1. Text stroke mask generation
+    - adaptive thresholding과 connected component labeling을 통해 image segmentation을 수행합니다.
+3. Text stroke mask generation
     - <img src="https://i.imgur.com/EgarFnX.png" width="600">
     - image segmentation map의 각 label이 text region mask와 얼마나 겹치는지 픽셀 수를 세어 계산합니다. 특정한 값 이상의 겹침이 발생하는 image segmentation map의 labels를 가지고 text stroke mask를 생성합니다.
-1. FC CRFs (Fully Connected Conditional Random Fields)
+4. FC CRFs (Fully Connected Conditional Random Fields) [3]
     - text stroke mask를 보정하여 최종 text stroke mask를 생성합니다.
 ### Learning-based Approach
 1. Text stroke mask prediction
     - <img src="https://i.imgur.com/mQr42x9.png" width="600">
-- text stroke mask prediction model [3]에 입력하기 위해 각 bounding box에 해당하는 이미지 패치를 1:5 또는 5:1이 비율이 되도록 분할하거나 패딩을 추가합니다.
+    - text stroke mask prediction model [4]에 입력하기 위해 각 bounding box에 해당하는 이미지 패치를 1:5 또는 5:1이 비율이 되도록 분할하거나 패딩을 추가합니다.
     - <img src="https://i.imgur.com/mRQSLzW.png" width="600">
-- 각 이미지 패치를 640 × 128로 리사이즈하여 text stroke mask prediction을 수행하고 원본 이미지의 원래의 위치에 삽입합니다.
-1. Text region mask generation
+    - 각 이미지 패치를 640 × 128로 리사이즈하여 text stroke mask prediction을 수행하고 원본 이미지의 원래의 위치에 삽입합니다.
+2. Text region mask generation
     - <img src="https://i.imgur.com/HpEVvJu.png" width="600">
     - <img src="https://i.imgur.com/J58rZEe.png" width="600">
-- text region score map으로부터 text region mask를 생성하고 여기에 FC CRFs를 적용합니다.
-1. Mask merge
+    - text region score map으로부터 text region mask를 생성하고 여기에 FC CRFs [3]를 적용합니다.
+3. Mask merge
     - <img src="https://i.imgur.com/2TgCExG.png" width="600">
-- text stroke mask와 text region mask를 합쳐 최종 text stroke mask를 생성합니다.
-## 3. Text Stroke Mask Postprocessing
+    - text stroke mask와 text region mask를 합쳐 최종 text stroke mask를 생성합니다.
+## 2-2. Text Stroke Mask Postprocessing
 1. Dilation (Thickening)
     - Text stroke mask가 텍스트를 완전히 덮지 못하면 텍스트가 깔끔하게 지워지지 않습니다. dilation을 통해 text stroke mask가 텍스트를 충분히 덮을 수 있도록 처리합니다.
-1. Watershed
+2. Watershed
     - <img src="https://i.imgur.com/3m2TOkK.png" width="600">
     - (이해를 돕기 위해 26개의 class만으로 단순화했습니다.)
-- text stroke mask에 watershed를 적용해 각 문자를 서로 다른 class로 구분하는 text region segmentation map을 생성합니다.
-1. Pseudo Character Centers (PCCs) extraction
+    - text stroke mask에 watershed를 적용해 각 문자를 서로 다른 class로 구분하는 text region segmentation map을 생성합니다.
+3. Pseudo Character Centers (PCCs) extraction
     - <img src="https://i.imgur.com/8ZC9zD4.png" width="600">
-- text region score map을 사용해 각 문자의 중심 좌표를 추출합니다.
-1. Text stroke mask split
-- Text stroke mask for texts to be removed ('Removal mask')
+    - text region score map을 사용해 각 문자의 중심 좌표를 추출합니다.
+4. Text stroke mask split
+    - Text stroke mask for texts to be removed ('Removal mask')
     - <img src="https://i.imgur.com/3L5lQT1.png" width="600">
-- Text stroke mask for texts not to be removed ('Revival mask')
+    - Text stroke mask for texts not to be removed ('Revival mask')
     - <img src="https://i.imgur.com/mvNOGF3.png" width="600">
-- Text region segemntation map과 PCCs를 사용해 text stroke mask를 둘로 분할하여 지워야 하는 텍스트와 지우지 말아야 하는 텍스트 대해 각각 mask를 생성합니다.
-## 4. Image Inpainting
-- Inpainted image
-    - <img src="https://i.imgur.com/V9FbGtR.png" width="600">
-- 'LaMa' image inpainting model [4]을 사용해 image inpainting을 수행합니다.
+    - Text region segemntation map과 PCCs를 사용해 text stroke mask를 둘로 분할하여 지워야 하는 텍스트와 지우지 말아야 하는 텍스트 대해 각각 mask를 생성합니다.
+## 3. Image Inpainting
+- <img src="https://i.imgur.com/V9FbGtR.png" width="600">
+- 'LaMa' image inpainting model [5]을 사용해 image inpainting을 수행합니다.
 - 이때 removal mask와 revival mask를 모두 사용해 텍스트를 지운 후 revival mask를 사용해 지우지 말아야 하는 텍스트를 다시 되살립니다.
 
 <!-- # Evaluation -->
@@ -89,5 +88,6 @@
 # References
 - [1] [Erasing Scene Text with Weak Supervision](https://github.com/KimRass/Place-Translation/blob/main/papers/erasing_scene_text_with_weak_supervision.pdf)
 - [2] [Character Region Awareness for Text Detection](https://github.com/KimRass/Place-Translation/blob/main/papers/character_region_awareness_for_text_detection.pdf)
-- [3] [Stroke-Based Scene Text Erasing Using Synthetic Data for Training](https://github.com/KimRass/Place-Translation/blob/main/papers/stroke_based_scene_text_erasing_using_synthetic_data_for_training.pdf)
-- [4] [Resolution-robust Large Mask Inpainting with Fourier Convolutions](https://github.com/KimRass/Place-Translation/blob/main/papers/resolution_robust_large_mask_inpainting_with_fourier_convolutions.pdf)
+- [3] [Semantic Image Segmentation with Deep Convolutional Nets and Fully Connected CRFs](https://github.com/KimRass/Place-Translation/blob/main/papers/semantic_image_segmentation_with_deep_convolutional_nets_and_fully_connected_crfs.pdf)
+- [4] [Stroke-Based Scene Text Erasing Using Synthetic Data for Training](https://github.com/KimRass/Place-Translation/blob/main/papers/stroke_based_scene_text_erasing_using_synthetic_data_for_training.pdf)
+- [5] [Resolution-robust Large Mask Inpainting with Fourier Convolutions](https://github.com/KimRass/Place-Translation/blob/main/papers/resolution_robust_large_mask_inpainting_with_fourier_convolutions.pdf)
