@@ -158,7 +158,19 @@
 - Text-rendered image without and with text region recognition
     - <img src="https://github.com/KimRass/scene_text_renderer/assets/105417680/4440acc1-7e93-480d-8692-6c89ddd59020" width="900">
 
+# Deployment Effect
+| a | as-is | to-be |
+|-|-|-|
+| font size | - bounding box의 가로와 세로 길이에 의해 결정되므로 원본 font size와 크게 달라질 수 있음<br>- 원본 font size보다 커질 수 있음  | - 충분한 텍스트 렌더링 공간이 확보된다면 bounding box의 가로와 세로 길이에 무관<br>- 원본 font size를 넘지 않는 한도 내에서 주어진 boundig box를 최대한 활용하는 font size 추출 |
+| writing direction | bounding box의 가로와 세로 길이의 비율에 의해 결정되므로 틀리게 추출되는 경우가 많음 | text detection model이 잘 감지하지 못하는 텍스트를 제외하고는 높은 인식률
+| text alignment |  |  |
+| text color | 검은색 또는 하얀색으로 단조로움 | 원본 이미지의 text color를 반영함으로써 다채롭고 생동감 있는 느낌을 전달 |
+| text line breaking | - 띄어쓰기가 없는 언어의 경우 하나의 의미를 갖는 텍스트가 두 줄에 걸쳐 렌더링되는 경우가 많음 |  |
+| text border width | - 모든 텍스트에 text border가 적용되어 가독성은 보장되나 심미성이 현저히 떨어짐<br>- CSS의 `text-stroke` 속성을 통해 구현되어 글자가 빛나는 듯한 효과 | - 가독성을 위해서 text border가 꼭 필요한 경우에만 적용하므로 심미성 향상<br>- CSS의 `text-stroke` 속성을 통해 구현되어 깔끔함
+| text border color | 텍스트가 검은색 일 경우에는 하얀색을, 반대의 경우에는 검은색을 사용함으로써 text border가 지나치게 강조됨 | 추출된 text color와의 interpolation을 통해 text border가 지나치게 강조되는 느낌을 완화
+
 # Final Results
+- 청계천: https://qr.flit.to/intro/cheonggye
 - 더현대 서울: https://qr.flit.to/info/thehyundai
 - 2022이태원 지구촌 축제
 https://qr.flit.to/info/itaewon2022
