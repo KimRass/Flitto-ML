@@ -1,5 +1,10 @@
-# Image-Checker
-## Process
+- 회사에서 운영하는 크라우드 소싱 데이터 수집 플랫폼을 통해 scene text images를 수집하는 프로젝트에서 image processing 알고리즘들을 통해 이미지에 대한 검수를 자동화하고 있습니다.
+- 자동 검수를 통과하지 못한 이미지에 한해서는 수동 검수를 진행합니다.
+
+# Requirements
+- 세부 프로젝트에 따라 이미지의 조건이 달라지지만 그 중 하나를 예로 들어 본다면 다음과 같습니다.
+
+# Process
 1. 이미지 접수 (`qc_pipeline`)
     - image_url	string	null	분석할 이미지의 s3 URL
     - image_id	int	null	이미지의 고유 id
