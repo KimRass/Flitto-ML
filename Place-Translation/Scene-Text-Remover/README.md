@@ -85,9 +85,42 @@
     - <img src="https://github.com/KimRass/Place-Translation/assets/105417680/3553a4c1-6c45-4c84-afcd-b82081ed5b88" width="600">
     - 이미지에서 너무 넓은 영역을 지우고 생성하려고 하면서 질감을 자연스럽게 살리지 못했습니다.
 
+# Evaluation
+## On Text Stroke Mask Prediction Task Using [6]
+## On Scene Text Removal Task Using [7]
+- Recall of scene text detection result using 'CRAFT' [2]
+- PSNR
+- SSIM
+- MSE
+
+| Approach | PSNR (↑) | SSIM (↑) | MSE (↓) |
+|-|-|-|-|
+| rule |  |  |  |
+| learning | 32.95 | 0.9536 | 0.0019 |
+<!-- 
+## Implementation Detail
+- Image
+    - <img src="https://github.com/KimRass/pggan_from_scratch/assets/105417680/b33e2094-d0bd-491b-8bad-47dafb664068" width="350">
+- Ground truth
+    - <img src="https://github.com/KimRass/pggan_from_scratch/assets/105417680/6931254c-d169-44bd-90aa-149c5d973b6e" width="350">
+- Text removed image (Rule-based text stroke mask)
+    - <img src="https://github.com/KimRass/pggan_from_scratch/assets/105417680/74ab1ccb-873d-4b28-a3fa-38b499f704bb" width="350">
+<!-- - Prediction and ground truth
+    - <img src="https://i.imgur.com/VXC2eTl.jpg" width="600"> -->
+<!-- - (Top left) True positive, (Top right) False positive, (Bottom right) True negative and (Bottom left) False negative -->
+<!-- - True positive, False positive, True negative and False negative
+    - <img src="https://i.imgur.com/jRVLNFK.jpg" width="600">
+    - <img src="https://github.com/KimRass/pggan_from_scratch/assets/105417680/f1e180ab-68a5-487e-80ae-28f90d7ae6ab" width="350">
+    - <img src="https://github.com/KimRass/pggan_from_scratch/assets/105417680/f813c302-2001-4b4f-a77e-fcfbe2cca32e" width="350">
+    - <img src="https://github.com/KimRass/pggan_from_scratch/assets/105417680/5b884ac7-3331-40c2-b636-21d16af0fc18" width="350">
+    - <img src="https://github.com/KimRass/pggan_from_scratch/assets/105417680/94ce0355-5789-4d20-a5f0-deee4aebd5ba" width="350"> -->
+
+
 # References
 - [1] [Erasing Scene Text with Weak Supervision](https://github.com/KimRass/Place-Translation/blob/main/papers/erasing_scene_text_with_weak_supervision.pdf)
 - [2] [Character Region Awareness for Text Detection](https://github.com/KimRass/Place-Translation/blob/main/papers/character_region_awareness_for_text_detection.pdf)
 - [3] [Semantic Image Segmentation with Deep Convolutional Nets and Fully Connected CRFs](https://github.com/KimRass/Place-Translation/blob/main/papers/semantic_image_segmentation_with_deep_convolutional_nets_and_fully_connected_crfs.pdf)
 - [4] [Stroke-Based Scene Text Erasing Using Synthetic Data for Training](https://github.com/KimRass/Place-Translation/blob/main/papers/stroke_based_scene_text_erasing_using_synthetic_data_for_training.pdf)
 - [5] [Resolution-robust Large Mask Inpainting with Fourier Convolutions](https://github.com/KimRass/Place-Translation/blob/main/papers/resolution_robust_large_mask_inpainting_with_fourier_convolutions.pdf)
+- [6] [KAIST Scene Text Database](http://www.iapr-tc11.org/mediawiki/index.php/KAIST_Scene_Text_Database)
+- [7] [SCUT-EnsText](https://github.com/HCIILAB/SCUT-EnsText) test set (813 images)
