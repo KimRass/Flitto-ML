@@ -156,7 +156,7 @@
     1. 텍스트를 공백을 기준으로 서브워드 단위로 분리합니다. 분리된 서브워드들을 하나씩 붙여가면서 원래의 텍스트에 가깝게 조금씩 문자열을 만들어갑니다.
     1. 완성되어가는 문자열을 가지고 렌더링을 시도합니다. 충돌이 발생하지 않으면 다음 서브워드를 그대로 이어붙여 다음 문자열을 만들고 충돌이 발생하면 줄바꿈을 중간에 삽입한 체로 다음 서브워드를 이어붙입니다. 충돌이 2회 연속 발생하면 해당 Font size로의 확대에 실패한 것이므로 해당 Bounding box의 최대 Font size는 바로 직전 단계에서 텍스트 렌더링에 성공한 Font size가 됩니다.
 - Text-rendered image without and with text region recognition
-    - <img src="https://github.com/KimRass/scene_text_renderer/assets/105417680/4440acc1-7e93-480d-8692-6c89ddd59020" width="900">
+    - <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/105417680/291140322-cc45026e-659a-4a05-ad01-d903aee08c66.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231218%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231218T031003Z&X-Amz-Expires=300&X-Amz-Signature=2142d1f4b71089c6c0dad11d6de199e038dfe5e01fdb503966baa4f2e64a06d2&X-Amz-SignedHeaders=host&actor_id=105417680&key_id=0&repo_id=569046892" width="900">
 
 # Deployment Effect
 | a | as-is | to-be |
