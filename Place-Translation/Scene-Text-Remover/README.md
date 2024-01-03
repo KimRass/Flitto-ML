@@ -69,7 +69,7 @@
 <!-- ## (2) Failure Cases -->
 
 # 3. Evaluation
-- On scene text removal task [1] using [7]
+- On scene text removal task [1] using [7] test set (813 images)
     | Approach | PSNR (↑) | SSIM (↑) | MSE (↓) |
     |-|-|-|-|
     | rule-based approach | 34.22 | 0.9686 | 0.0017 |
@@ -97,7 +97,7 @@
 - [4] [Stroke-Based Scene Text Erasing Using Synthetic Data for Training](https://github.com/KimRass/Place-Translation/blob/main/papers/stroke_based_scene_text_erasing_using_synthetic_data_for_training.pdf)
 - [5] [Resolution-robust Large Mask Inpainting with Fourier Convolutions](https://github.com/KimRass/Place-Translation/blob/main/papers/resolution_robust_large_mask_inpainting_with_fourier_convolutions.pdf)
 - [6] [KAIST Scene Text Database](http://www.iapr-tc11.org/mediawiki/index.php/KAIST_Scene_Text_Database)
-- [7] [SCUT-EnsText](https://github.com/HCIILAB/SCUT-EnsText) test set (813 images)
+- [7] [SCUT-EnsText](https://github.com/HCIILAB/SCUT-EnsText)
 
 <!-- ## Text Detectability
 - Requirements:
