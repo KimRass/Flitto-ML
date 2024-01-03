@@ -61,10 +61,13 @@
 - 이때 removal mask와 revival mask를 모두 사용해 텍스트를 지운 후 revival mask를 사용해 지우지 말아야 하는 텍스트를 다시 되살립니다.
 
 # 2. Examples
-- <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/4738b594-c869-41f6-bbbb-7cdc83cec6b8" width="800">
-- <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/6f295647-c8cb-41c5-bf9a-c0503a840edf" width="300">
+<!-- - <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/4738b594-c869-41f6-bbbb-7cdc83cec6b8" width="700"> -->
+## (1) Dense Text
+- <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/6f295647-c8cb-41c5-bf9a-c0503a840edf" width="350">
 - <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/4315e3c7-3c60-4584-80ac-094a194c6b9a" width="400">
-- <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/929867bd-14d8-4b74-92e4-7e7c60b66377" width="500">
+## (2) Complicated Background
+- <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/929867bd-14d8-4b74-92e4-7e7c60b66377" width="600">
+- <img src="https://github.com/KimRass/KimRass/assets/67457712/9d6f8ecd-40a4-4067-83bd-c978a583df59" width="500">
 <!-- ## (1) Success Cases -->
 <!-- ## (2) Failure Cases -->
 
@@ -82,12 +85,12 @@
 ## (1) Scene Text Detection
 - scene text detection 과정이 꼭 필요한가? 즉 bounding box를 그대로 mask로 사용해 image inpainting을 하면 어떻게 되는지 확인해보겠습니다.
 - Case 1:
-    - <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/f9cbb17c-5787-49e0-bc00-dd02773aa765" width="700">
+    - <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/f9cbb17c-5787-49e0-bc00-dd02773aa765" width="500">
     - '겨울시즌한정': bounding box가 axis-aligned rectangle이므로 사선으로 렌더링된 텍스트를 깔끔하게 지우지 못했습니다.
     - '한우 육회비빔밥 소반': 타겟 텍스트를 잘 지웠으나 boundig box가 외국어 나란히쓰기 텍스트까지 지워버렸습니다. (외국어 나란히쓰기 텍스트를 지우지 않고자 하는 경우)
     - '일일 20개 한정': bounding box가 원본 이미지에 있던 빨간색 직사각형과 겹침이 발생하여 이를 깔끔하게 지우지 못했습니다.
 - Case 2:
-    - <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/ac09af87-a635-4c1b-8b6d-591f1ccc171c" width="600">
+    - <img src="https://github.com/KimRass/Flitto-ML/assets/67457712/ac09af87-a635-4c1b-8b6d-591f1ccc171c" width="400">
     - 이미지에서 너무 넓은 영역을 지우고 생성하려고 하면서 질감을 자연스럽게 살리지 못했습니다.
 
 # 5. References
